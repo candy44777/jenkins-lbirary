@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('jenkins-library') _
+@Library('jenkins-lbirary')_
 def tools = new org.devops.tools()
 
 string workspace = "/opt/jenkins/workspace"
@@ -77,4 +77,5 @@ pipeline {
             }
     }
 }
+
 
