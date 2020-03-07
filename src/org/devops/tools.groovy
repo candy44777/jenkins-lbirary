@@ -1,4 +1,4 @@
-pakage org.devops
+package org.devops
 
 //打印内容
 def PrinMes(content) {
