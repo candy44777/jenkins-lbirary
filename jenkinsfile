@@ -1,0 +1,80 @@
+#!groovy
+
+@Library('jenkins-library') _
+def tools = new org.devops.tools()
+
+string workspace = "/opt/jenkins/workspace"
+pipeline {
+    agent { node  { label "master"
+                    customWorkspace "${workspace}"
+                    }
+            }
+
+    options {
+        timestamps()
+        skipDefaultCheckout()
+        disableConcurrentBuilds()
+        timeout(time: 1, unit: 'HOURS')
+
+    }
+
+        stages {
+            stage("getCode") {
+                steps{
+                    timeout(time: 1, unit: 'MINUTES') {
+                        script {
+                            println('获取代码')
+                        }
+                    }
+                }
+            }
+
+            stage('build') {
+                steps {
+                    timeout(time: 20, unit: 'MINUTES') {
+                        script {
+                            println('应用打包')
+                        }
+                    }
+                }
+            }
+
+            stage('CodeScan') {
+                steps{
+                    timeout(time: 20, unit: 'MINUTES') {
+                        script {
+                            println('代码扫描')
+                            tools.PrintMes("this is my library")
+                        }
+                    }
+                }
+            }
+        }
+
+        post {
+            always {
+                script {
+                    println('always')
+                }
+            }
+
+            success {
+                script {
+                    currentBuild.description += "\n 构建成功！"
+                }
+            }
+
+            failure {
+                script {
+                    currentBuild.description += "\n 构建失败！"
+                    }
+                }
+
+            aborted {
+                script {
+                    currentBuild.description += "\n 构建取消"
+                }
+            }
+    }
+}
+
